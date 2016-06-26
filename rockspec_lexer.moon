@@ -33,6 +33,7 @@ howl.aux.lpeg_lexer ->
 
   hexadecimal_number =  P'0' * S'xX' * xdigit^1 * (P'.' * xdigit^1)^0 * (S'pP' * S'-+'^0 * xdigit^1)^0
   float = digit^0 * P'.' * digit^1
+
   number = c 'number', any({
     hexadecimal_number * any('LL', 'll', 'ULL', 'ull')^-1,
     digit^1 * any { 'LL', 'll', 'ULL', 'ull' },
@@ -104,9 +105,9 @@ howl.aux.lpeg_lexer ->
     comment,
     operator,
     special,
-    fdecl,
-    keyword,
-    cdef,
+    -- fdecl,
+    -- keyword,
+    -- cdef,
     constant,
     identifier,
   }
