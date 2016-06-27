@@ -4,13 +4,6 @@
 howl.aux.lpeg_lexer ->
   c = capture
 
-  keyword = c 'keyword', word {
-     'and', 'break', 'do', 'elseif', 'else', 'end',
-     'false', 'for', 'function',  'goto', 'if', 'in',
-     'local', 'nil', 'not', 'or', 'repeat', 'return',
-     'then', 'true', 'until', 'while',
-  }
-
   bracket_quote_lvl_start = P'[' * Cg(P('=')^0, 'lvl') * '['
   bracket_quote_lvl_end = ']' * match_back('lvl') * ']'
   bracket_quote =  bracket_quote_lvl_start * scan_to(bracket_quote_lvl_end)^-1
@@ -53,61 +46,12 @@ howl.aux.lpeg_lexer ->
 
   ws = c 'whitespace', blank^0
 
-  fdecl = any {
-    sequence {
-      c('keyword', 'function'),
-      c 'whitespace', blank^1,
-      c('fdecl', ident * (S':.' * ident)^-1)
-    },
-    sequence {
-      c('fdecl', ident),
-      ws,
-      c('operator', '='),
-      ws,
-      c('keyword', 'function'),
-      -#any(digit, alpha)
-    }
-  }
-
-  cdef = sequence {
-    any {
-      sequence {
-        c('identifier', 'ffi'),
-        c('operator', '.'),
-      },
-      line_start
-    },
-    c('identifier', 'cdef'),
-    c('operator', '(')^-1,
-    ws,
-    any {
-      sequence {
-        c('string', bracket_quote_lvl_start),
-        sub_lex('c', bracket_quote_lvl_end),
-        c('string', bracket_quote_lvl_end)^-1,
-      },
-      sequence {
-        c('string', '"'),
-        sub_lex('c', '"'),
-        c('string', '"')^-1,
-      },
-      sequence {
-        c('string', "'"),
-        sub_lex('c', "'"),
-        c('string', "'")^-1,
-      }
-    }
-  }
-
   any {
     number,
     string,
     comment,
     operator,
     special,
-    -- fdecl,
-    -- keyword,
-    -- cdef,
     constant,
     identifier,
   }
