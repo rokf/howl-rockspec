@@ -5,8 +5,7 @@ style.define 'longstring', 'string'
 class RockspecMode
   new: =>
     @lexer = bundle_load('rockspec_lexer')
-    @api = bundle_load('api')
-    @completers = { 'in_buffer', 'api' }
+    @completers = {'in_buffer'}
 
   comment_syntax: '--'
 

@@ -1,7 +1,5 @@
--- Copyright 2014-2015 The Howl Developers
--- License: MIT (see LICENSE.md)
 
-howl.aux.lpeg_lexer ->
+howl.util.lpeg_lexer ->
   c = capture
 
   bracket_quote_lvl_start = P'[' * Cg(P('=')^0, 'lvl') * '['
@@ -43,8 +41,6 @@ howl.aux.lpeg_lexer ->
     'nil',
     '_' * upper^1 -- variables conventionally reserved for Lua
   }
-
-  ws = c 'whitespace', blank^0
 
   any {
     number,
